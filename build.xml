@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="build">
+
+<!-- APPLICATION METADATA -->
+<property name="mdpc.name"      value="mdvl-umlet"/>
+<property name="mdpc.section"   value="java"/>
+<property name="mdpc.arch"      value="all"/>
+<property name="mdpc.descrs"    value="Tool to create UML Diagrams"/>
+<property name="mdpc.depends"   value="default-jre"/>
+<property name="mdpc.bdep"      value="maven"/>
+<!--
+	Derived from the FAQ at https://www.umlet.com/faq.htm.
+	No better license copyright indicators could be found.
+
+	Files build.xml and umlet (start script) are Ma_Sys.ma creations.
+-->
+<property name="mdpc.copyright" value="Copyright (c) 2002--2018 M. Auer, J. Poelz, A. Fuernweger, L. Meyer, T. Tschurtschenthaler"/>
+<property name="mdpc.descrl">
+ UMLet is an open-source UML tool with a simple user interface:
+ draw UML diagrams fast, export diagrams to eps, pdf, jpg, svg, and clipboard,
+ share diagrams using Eclipse, and create new, custom UML elements.
+</property>
+
+<property name="ver.inner" value="14.3"/>
+<property name="ver.umlet" value="2018-08-05_UMLet_v${ver.inner}"/>
+<property name="buildroot" value="build/umlet-${ver.umlet}/umlet-standalone"/>
+
+<!--
+	Need to deviate from proper FHS install location which would be
+	/usr/share/java because UMLet seems to find its resources relative
+	to its own JAR file.
+-->
+<property name="mdpc.file.install">
+build/Umlet/umlet.jar /usr/share/mdvl-umlet
+build/Umlet/lib /usr/share/mdvl-umlet
+build/Umlet/img /usr/share/mdvl-umlet
+build/Umlet/palettes /usr/share/mdvl-umlet
+build/Umlet/custom_elements /usr/share/mdvl-umlet
+umlet /usr/bin
+</property>
+
+<!-- PART OF TPL HERE FOR USE IN BUILD -->
+<property environment="env"/>
+<condition property="masysma.internal.includepath.rel" value="${env.MDVL_CI_PHOENIX_ROOT}" else=".."><isset property="env.MDVL_CI_PHOENIX_ROOT"/></condition>
+<property name="masysma.internal.includepath" location="${masysma.internal.includepath.rel}"/>
+
+<!-- SPECIFIC BUILD -->
+<target name="download">
+	<masysma_require_artifact
+		masysmaartifact="umlet.tar.gz"
+		masysmaatarget="build"
+		masysmaadef="https://github.com/umlet/umlet/archive/refs/tags/${ver.umlet}.tar.gz"/>
+</target>
+
+<target name="build" depends="download">
+	<exec executable="mvn" dir="${buildroot}" failonerror="true">
+		<arg value="clean"/>
+		<arg value="package"/>
+		<arg value="-DskipTests"/>
+	</exec>
+	<unzip dest="build"
+		src="${buildroot}/target/umlet-standalone-${ver.inner}.0.zip"/>
+	<!--
+	This variant does not seem to work!
+	<jar destfile="build/umlet-with-dependencies.jar">
+		<zipgroupfileset dir="build/Umlet">
+			<include name="umlet.jar"/>
+			<include name="lib/*.jar"/>
+		</zipgroupfileset>
+		<manifest>
+			<attribute name="Main-Class"
+				value="com.baselet.standalone.MainStandalone"/>
+		</manifest>
+	</jar>
+	-->
+</target>
+
+<target name="clean"><delete dir="build"/></target>
+<target name="dist-clean" depends="clean">
+	<delete file="umlet-with-dependencies.jar"/>
+</target>
+
+<!-- CI INTEGRATION -->
+<target name="package_triggered" depends="package">
+	<property name="masysma.ci.trigger" value="newver"/>
+</target>
+
+<!-- TPL IMPORT (PARTIALLY GIVEN ABOVE) -->
+<property name="masysma.internal.loadpath" value="${masysma.internal.includepath}/co-build/ant-build-template.xml"/>
+<condition property="masysma.internal.load" value="file://${masysma.internal.loadpath}" else="https://raw.githubusercontent.com/m7a/co-build/master/ant-build-template.xml"><resourceexists><file file="${masysma.internal.loadpath}"/></resourceexists></condition>
+<import><url url="${masysma.internal.load}"/></import>
+
+</project>

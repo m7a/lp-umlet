@@ -1,0 +1,13 @@
+#!/bin/sh -e
+# Ma_Sys.ma Script to run UMLET 1.0, Copyright (c) 2021 Ma_Sys.ma.
+# For further info send an e-mail to Ma_Sys.ma@web.de.
+
+[ -n "$UMLET_HOME" ] || UMLET_HOME=/usr/share/mdvl-umlet
+
+alljars="$UMLET_HOME/umlet.jar"
+for i in "$UMLET_HOME/lib"/*.jar; do
+	alljars="$alljars:$i"
+done
+
+unset UMLET_HOME
+exec java -cp "$alljars" com.baselet.standalone.MainStandalone "$@"
