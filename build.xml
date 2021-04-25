@@ -23,7 +23,7 @@
 
 <property name="ver.inner" value="14.3"/>
 <property name="ver.umlet" value="2018-08-05_UMLet_v${ver.inner}"/>
-<property name="buildroot" value="build/umlet-${ver.umlet}/umlet-standalone"/>
+<property name="buildroot" value=""/>
 
 <!--
 	Need to deviate from proper FHS install location which would be
@@ -53,13 +53,20 @@ umlet /usr/bin
 </target>
 
 <target name="build" depends="download">
-	<exec executable="mvn" dir="${buildroot}" failonerror="true">
+	<!--
+		This will fail with a wall of errors but is needed for
+		the subsequent step to succeed
+	-->
+	<exec executable="mvn" dir="build/umlet-${ver.umlet}" failonerror="false">
 		<arg value="clean"/>
+		<arg value="install"/>
+		<arg value="-DskipTests"/>
+	</exec>
+	<exec executable="mvn" dir="build/umlet-${ver.umlet}/umlet-standalone" failonerror="true">
 		<arg value="package"/>
 		<arg value="-DskipTests"/>
 	</exec>
-	<unzip dest="build"
-		src="${buildroot}/target/umlet-standalone-${ver.inner}.0.zip"/>
+	<unzip dest="build" src="build/umlet-${ver.umlet}/umlet-standalone/target/umlet-standalone-${ver.inner}.0.zip"/>
 	<!--
 	This variant does not seem to work!
 	<jar destfile="build/umlet-with-dependencies.jar">

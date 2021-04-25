@@ -1,3 +1,9 @@
+mdvl-umlet (1.0.1) stable; urgency=medium
+
+  * Attempt to fix build problems.
+
+ -- Linux-Fan, Ma_Sys.ma <Ma_Sys.ma@web.de>  Sun, 25 Apr 2021 23:49:33 +0200
+
 mdvl-umlet (1.0.0) stable; urgency=medium
 
   * Package created with MDPC 2
