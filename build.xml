@@ -7,6 +7,8 @@
 <property name="mdpc.arch"      value="all"/>
 <property name="mdpc.descrs"    value="Tool to create UML Diagrams"/>
 <property name="mdpc.depends"   value="default-jre"/>
+<!-- Make sure it conflicts w/ the official Debian package -->
+<property name="mdpc.conflicts" value="umlet"/>
 <property name="mdpc.bdep"      value="maven"/>
 <!--
 	Derived from the FAQ at https://www.umlet.com/faq.htm.

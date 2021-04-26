@@ -1,3 +1,9 @@
+mdvl-umlet (1.0.2) stable; urgency=medium
+
+  * Add conflicts field for official Debian package.
+
+ -- Linux-Fan, Ma_Sys.ma <Ma_Sys.ma@web.de>  Mon, 26 Apr 2021 14:20:04 +0200
+
 mdvl-umlet (1.0.1) stable; urgency=medium
 
   * Attempt to fix build problems.
