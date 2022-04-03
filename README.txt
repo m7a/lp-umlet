@@ -1,5 +1,9 @@
 `mdvl-umlet` package for UMLet, a tool to create UML Diagrams.
-See <https://www.umlet.com/> and <https://github.com/umlet/umlet>
+See <https://www.umlet.com/> and <https://github.com/umlet/umlet>.
+
+Please prefer using the official Debian package if sufficient. See
+<https://packages.debian.org/bullseye/umlet> and
+<https://tracker.debian.org/pkg/umlet>.
 
 This package builds only the `umlet-standalone` variant.
 
