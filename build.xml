@@ -31,6 +31,10 @@
 	Need to deviate from proper FHS install location which would be
 	/usr/share/java because UMLet seems to find its resources relative
 	to its own JAR file.
+
+	Alternatively see
+	https://sources.debian.org/src/umlet/13.3-1.3/debian/patches/
+	for patches to fix this issue.
 -->
 <property name="mdpc.file.install">
 build/Umlet/umlet.jar /usr/share/mdvl-umlet
@@ -90,9 +94,7 @@ umlet /usr/bin
 </target>
 
 <!-- CI INTEGRATION -->
-<target name="package_triggered" depends="package">
-	<property name="masysma.ci.trigger" value="newver"/>
-</target>
+<target name="autoci" depends="autopackage"/>
 
 <!-- TPL IMPORT (PARTIALLY GIVEN ABOVE) -->
 <property name="masysma.internal.loadpath" value="${masysma.internal.includepath}/co-build/ant-build-template.xml"/>
